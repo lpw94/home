@@ -1,16 +1,7 @@
-/*1 重定义浏览器默认样式
+  	/*1 重定义浏览器默认样式
 	Name:			style_reset
 	Explain:		重定义浏览器默认样式
 */
-
-/*通用定义*/
-.clear {clear:both;} 
-.clearfix:after { content: "."; display: block; height: 0; clear: both; visibility: hidden;}
-/* Hides from IE-mac \*/
-* html .clearfix {height: 1%;}
-/* End hide from IE-mac */
-.dn{display: none!important;}
-*+html .clearfix {min-height: 1%;}
 *{word-wrap:break-word}
 html,body,h1,h2,h3,h4,h5,h6,hr,p,iframe,dl,dt,dd,ul,ol,li,pre,form,button,input,textarea,th,td,fieldset{margin:0;padding:0}
 ul,ol,dl{list-style-type:none}
@@ -21,16 +12,12 @@ input,button,textarea,select,optgroup,option{font-family:inherit;font-size:inher
 input,button{overflow: visible;vertical-align:middle;outline:none}
 input[type="submit"],input[type="reset"],input[type="button"],input[type="text"],input[type="password"]{-webkit-appearance:none;outline:none}
 body,th,td,button,input,select,textarea{font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif,"\5B8B\4F53";font-size:12px;color: #333;-webkit-font-smoothing: antialiased;-moz-osx-font-smoothing:grayscale}
-@media ( max-width : 767px) {
-	html{ overflow-y:auto}
-	body,th,td,button,input,select,textarea{ font-size:14px}
-}
+
 body{line-height:1.6; position:relative}
-h1,h2,h3,h4,h5,h6{font-size:100%}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight: normal;}
 a,area{outline:none;blr:expression(this.onFocus=this.blur())}
 a{text-decoration:none;cursor: pointer;color:#666;} 
-a:hover{outline:none;text-decoration: underline;color: #E30005;
-}
+a:hover{outline:none;text-decoration: none;/*color: #E30005;*/}
 a:active{text-decoration:none;outline:none}
 a.ie6:hover{zoom:1}
 a:focus{outline:none}
@@ -48,9 +35,14 @@ a img,img{-ms-interpolation-mode:bicubic}
 header,footer,section,aside,details,menu,article,section,nav,address,hgroup,figure,figcaption,legend{display:block;margin:0;padding:0}time{display:inline}
 audio,canvas,video{display:inline-block;*display:inline;*zoom:1}
 audio:not([controls]){display:none}
+legend{width:100%;margin-bottom:20px;font-size:21px;line-height:40px;border:0;border-bottom:1px solid #e5e5e5}
+legend small{font-size:15px;color:#999}
+svg:not(:root) {overflow: hidden}
+fieldset {border-width:0;padding: 0.35em 0.625em 0.75em;margin: 0 2px;border: 1px solid #c0c0c0}
 input[type="number"]::-webkit-inner-spin-button,input[type="number"]::-webkit-outer-spin-button {height: auto}
 input[type="search"] {-webkit-appearance: textfield; /* 1 */}
 input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit-search-decoration {-webkit-appearance: none}
+table{border-collapse:collapse;border-spacing:0;}
 /*清除浮动
 	Name:			style_clearfix
 	Example:		class="clearfix|cl"
@@ -58,29 +50,20 @@ input[type="search"]::-webkit-search-cancel-button,input[type="search"]::-webkit
 */
 .cl:after,.clearfix:after{content:"";display:block;height:0;clear:both;visibility:hidden}.cl,.clearfix{zoom:1}
 .pr{position: relative;}
-a:hover{text-decoration:none;}
-.show{display: block;}
-.hide{display: none;}
 .conW{margin:0 auto;width:1200px}
 .icon{display: inline-block;}
+.pt20{padding-top: 20px}
+.pt30{padding-top: 30px}
 
 .fr{float: right}
 .fl{float: left}
-.ml10{margin-left: 10px}
+
 .ml20{margin-left: 20px}
 .ml30{margin-left: 30px}
 .mt10{margin-top: 10px}
 .mt20{margin-top: 20px}
-.mt30{margin-top: 30px}
 .mb10{margin-bottom: 10px}
 .mb20{margin-bottom: 20px}
-.mb30{margin-bottom: 30px}
-.pt10{padding-top: 10px}
-.pt20{padding-top: 20px}
-.pt30{padding-top: 30px}
-.pt40{padding-top: 40px}
-.pl10{padding-left: 10px}
-.pl20{padding-left: 20px}
-.pl30{padding-left: 30px}
-
-
+*{
+	box-sizing: border-box;
+}

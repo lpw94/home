@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>文章详情</title>
+		<meta name="referrer" content="never">
+		<!--忽略电话号码和email识别-->
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="format-detection" content="email=no" />
+		<!--当网站添加到主屏幕快速启动方式，将网站添加到主屏幕快速启动方式-->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<!--隐藏ios上的浏览器地址栏-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<!-- UC默认竖屏 ，UC强制全屏 -->
+		<meta name="full-screen" content="yes">
+		<meta name="browsermode" content="application">
+		<!-- QQ强制竖屏 QQ强制全屏 -->
+		<meta name="x5-orientation" content="portrait">
+		<meta name="x5-fullscreen" content="true">
+		<meta name="x5-page-mode" content="app">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,minimal-ui">
+		<link rel="stylesheet" href="css/reset.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" type="text/css" href="css/iconfont/1.0.8/iconfont.css" />
+		<link rel="stylesheet" type="text/css" href="css/fontIcon/iconfont.css">
+		<script src="js/vue.min.js"></script>
+		<script src="js/axios.min.js"></script>
+		<script src="js/adaptive.js"></script>
+		<script type="text/javascript">
+				window['adaptive'].desinWidth = 640;
+		        window['adaptive'].baseFont = 28;
+		        window['adaptive'].scaleType = 2; // 1为默认值，可以不用设置
+		        window['adaptive'].init();
+		</script>
+	</head>
+	<body>
+		<div id="app">
+			<!--文章部分-->
+			<div class="article">
+				<h1 id="title">{{msg.title}}</h1>
+				<div class="desc"><span class="time">{{msg.createDate | date}}</span></div>
+				<!--文章主体-->
+				<div class="content" v-html="msg.content"></div>
+
+				<p>推荐：{{msg.tags}}</p>
+			</div>
+
+			
+
+
+			<!--推荐-->
+			<div class="recommend">
+				<div class="head">相关推荐</div>
+				<ul id="recommendList" v-if="rec.length">
+					<li class="clearfix" v-for="item in rec">
+						<div class="rec_r">
+							<h4 class="title"><a href="#">{{item.title}}</a></h4>
+							<p class="des clearfix">
+								<span></span>
+								<span></span>
+								<span class="sup">
+									<i class="iconfont icon-pinglun"></i><em>{{item.likeTotals}}</em>
+								</span>
+							</p>
+						</div>
+						<div class="pic">
+							<a href="#"><img :src="item.appImage" alt="" /></a>
+						</div>
+					</li> 
+				</ul>
+			</div>
+		</div>
+
+		<script>
+		Vue.filter('date',function(input){
+            var oDate=new Date(input);
+            var month = (oDate.getMonth()+1)>10 ? oDate.getMonth()+1 : '0' + (oDate.getMonth()+1);
+            var day = oDate.getDate()>10 ? oDate.getDate() : '0' + oDate.getDate();
+            var hours = oDate.getHours()>10 ? oDate.getHours() : '0' + oDate.getHours();
+            var minutes = oDate.getMinutes()>10 ? oDate.getMinutes() : '0' + oDate.getMinutes();
+            var seconds = oDate.getSeconds()>10 ? oDate.getSeconds() : '0' + oDate.getSeconds();
+
+            return oDate.getFullYear()+'-'+ month +'-'+day+' '+hours+':'+minutes//+':'+seconds;
+        });
+
+        var url = window.location.href;
+		var vm = new Vue({
+			el: '#app',
+			data: {
+				msg: {
+				},
+				rec: {
+				},
+				status : false,
+				show: false,
+				Tags: ""
+			},
+			methods:{
+				read: function(){
+					var This =this;
+					var type  = 2;//this.getUrl('nid');
+					var id = 40;
+					var datas = {
+							id: this.getUrl('nid')
+						}
+					//console.log("000")
+					axios.post('http://192.168.3.100:8188/yys-api/wechat/news/detail?id='+datas.id+'', {})
+					  .then(function (response) {
+					  	This.Tags = response.data.result.tags;
+					  	This.msg = response.data.result;
+					  	console.log(This.Tags);
+
+					  	axios.post('http://192.168.3.100:8188/yys-api/new/appNewsRecommend?tags='+This.Tags+'', {})
+						  .then(function (response) {
+						  	console.log(response.data.result);
+						  	This.rec = response.data.result
+						  })
+
+					  .catch(function (error) {
+					    console.log(error);
+					  });
+					  })
+					  .catch(function (error) {
+					    console.log(error);
+					  });
+
+					  
+				},
+				addlike: function(){
+					if (!this.status) {
+						this.msg.likeTotals = this.msg.likeTotals + 1;
+						this.status = true;
+					}
+				},
+
+				getUrl: function(name){
+				     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				     var r = window.location.search.substr(1).match(reg);
+				     if(r!=null)return  unescape(r[2]); return null;
+				},
+				add: function(){
+					//alert(this.getUrl('nid'));
+				}, 
+				fnAndroid: function(a){
+					//var result =window.android.back();
+					console.log(a)
+			        //return result;
+				}
+			},
+			mounted:function(){
+				this.read();
+				//console.log(this.getUrl('nid'));
+
+				if (this.getUrl('nid')==0) {
+					this.show = false;
+				}else{
+					this.show = true;
+				}
+			}
+
+		})
+	</script>
+	</body>
+</html>
